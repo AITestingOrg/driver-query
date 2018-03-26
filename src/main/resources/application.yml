@@ -1,0 +1,42 @@
+# Mongo config
+spring:
+  application:
+    name: driver-query
+  data:
+    mongodb:
+      database: driver-query
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: ${APP_PORT:8080}
+
+amqp:
+  events:
+    host: ${RABBIT_HOST:localhost}
+    exchange-name: eventBus
+    queue-name: eventQueue
+    handlers: org.aitesting.microservices.driver.query.domain.eventhandlers
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+      hibernate: DEBUG
+      apache:
+        commons:
+          dbcp2: DEBUG
+
+---
+spring:
+  profiles: test
