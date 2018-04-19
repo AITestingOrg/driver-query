@@ -1,5 +1,6 @@
 package org.aitesting.microservices.driver.query.domain.eventhandlers;
 
+import org.aitesting.microservices.driver.common.events.DriverAvailabilityChangedEvent;
 import org.aitesting.microservices.driver.common.events.DriverCreatedEvent;
 import org.aitesting.microservices.driver.common.events.DriverDeletedEvent;
 import org.aitesting.microservices.driver.query.domain.models.Driver;
@@ -30,8 +31,17 @@ public class DriverEventHandler {
 
     @EventHandler
     public void on(DriverDeletedEvent event) {
-        LOG.trace("Deleting driver: {}", event.getId());
+        LOG.info("Deleting driver: {}", event.getId());
         driverRepository.delete(event.getId());
         LOG.info("Driver deleted: {}", event.getId());
+    }
+
+    @EventHandler
+    public void on(DriverAvailabilityChangedEvent event) {
+        LOG.info("Updating driver availability: {}", event.getId());
+        Driver driver = driverRepository.findOne(event.getId());
+        driver.setAvailable(event.isAvailable());
+        driverRepository.save(driver);
+        LOG.info("Driver availability updated: {}", event.getId());
     }
 }

@@ -81,4 +81,8 @@ public class Driver {
     public int getNumberOfRatings() {
         return numberOfRatings;
     }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 }
