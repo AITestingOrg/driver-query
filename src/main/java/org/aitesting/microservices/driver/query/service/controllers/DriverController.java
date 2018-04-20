@@ -30,7 +30,7 @@ public class DriverController {
         return new ResponseEntity<>(driverRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("drivers/{id}")
+    @GetMapping("driver/{id}")
     public ResponseEntity<Driver> getDriver(@PathVariable UUID id) {
         logger.info(String.format("Request for a driver with id: %s", id));
         return new ResponseEntity<>(driverRepository.findOne(id), HttpStatus.OK);
