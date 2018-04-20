@@ -1,0 +1,29 @@
+language: java
+jdk:
+- oraclejdk8
+sudo: required
+services:
+- mongodb
+- rabbitmq
+before_install:
+- echo "Testing Docker Hub credentials"
+- docker -v
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- echo "Docker Hub credentials are working"
+after_success:
+- export ACTUAL_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
+  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+- echo "Test Success - Branch($TRAVIS_BRANCH) Actual($ACTUAL_BRANCH) Pull Request($TRAVIS_PULL_REQUEST)
+  Tag($TRAVIS_TAG) Commit($TRAVIS_COMMIT) PR($TRAVIS_PULL_REQUEST) Build($TRAVIS_BUILD_NUMBER)"
+- if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub";
+  fi
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- export REPO=aista/driver-query
+- export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest";else echo "";
+  fi`
+- docker build -f Dockerfile -t $REPO:$TAG .
+- docker push $REPO
+env:
+  global:
+  - secure: zOl6zn3J3vgbVHVirwME6ufkCidxoheiDdUTjEGhsLkI50+LlWxfANY11ivEM2jarts6GROcKSSw7oU+zslFDkzr9fZsE00FC+TP0GcnMqVU91s93E2GF0N81L5P5ZRTOkAkqS4snIvQKP/ahfkF61aQn5jkVpiiq0fCDIhZY8gtuaKMEjVvx+EDiJVT3kPlTb1m7Dek5qPiIZecR0ls8PWQYvh43DHMUQpGWxoMi4+0E5asOtV1sYEZggku1r5rR52Hpvaxp7qvOD3MOyR6mCt43X9mfkRhWnEsiInaiz/Dl5ygAX/52QoVBdvGK/NLayESb10LkO63KrT/x7nDgZ05Xh88qlmssXxB2PLobGH1HJYp2e9duOtT/om7HH32DPoUMq2L3NQ+L/be+keWO1Po6vHOO47955HAl5ovYOtxMp7BLeDRNuSxwo6TEcTWbWkbO3DcNSYCaMcAiRWl7alJ6sf0BQUwPVNjGzRRPAVym6FURaMAYJIHEU1S/OBx906CMQXlupEh/xm7UaN9UU2VtZ83j/UWpc3Y5kmgBA30FKsJQePAUeadU0G92q+EmQsD/8IaOqKK4OhwYrziR7JfPoKUQXWKkCcO0hVKEHagSZtqYrdiZm9+HrvVlO9Li6YO3s+gU+KU7t+bYWZ+bGNuMalbphEDHTBN/TUriBc=
+  - secure: xtZQGwYE1v6jhPSHYVQcd6BWZiGnfCMKeLEgBzTvE+QZTqJzTVCIgK/FT2bY/XmM6gfQqYErbiiYg0eI7n9BZW7MW6rZSU1JMyUbziwQD/GS5CmINui1Xq/GsKv+xdlsZq3RjrEdOajJnQtYkkLllWVZ/pD7nF8NCDmXHZ0fCL07ZY1RYtJNnpGCfYMzPoC08CjMSmMsVlFa+fCdnWQM4gQXM8vkZD1Y+N29c0wnl5yUlY/RioE9cH98VKE3Cd+BBOmWGD4/qvUv+aULYXAwGwP1QMjpzpy8VUEVadrfrfPgHjnug8sH+YZe+WUfMZg2ZnEbtfhKX98Ik/7J85A6hhVIrLaLPVsL1cdcJMt/HyLaQOVbbk5VRXKI6Oj9nOk6KRq4WdF6MrdL/47nMRB/xcHv6HvdSO4FTUz8hJbz4JmpFh+LXevn9TQKdi5QjEmcwm2k8BTgQO44TqCHLzqF9w7X3OUUFB0Zxv8YBgug1V1r2Z0gL4JtygLDL0FAn0hO3Z2Q/mO8vp1SgO9Pe8a0M3phPuYJ4EZu6v2Y6gugWC/UOulMFkBVHUZeEpXpXrJGF1ciXqvfNAOkPFCSXAfIQXoALEabIuZqc7VbhKjA2+Z30zHW9Filz8sFG+VmB7sEdnRkhFleV24ABweSQywDsZPsrr3gdNSVrfYEJh4b/d8=
