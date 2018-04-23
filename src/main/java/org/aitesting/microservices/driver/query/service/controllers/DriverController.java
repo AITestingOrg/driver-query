@@ -33,7 +33,13 @@ public class DriverController {
     @GetMapping("driver/{id}")
     public ResponseEntity<Driver> getDriver(@PathVariable UUID id) {
         logger.info(String.format("Request for a driver with id: %s", id));
-        return new ResponseEntity<>(driverRepository.findOne(id), HttpStatus.OK);
+        Driver driver = driverRepository.findOne(id);
+        if(driver != null) {
+            logger.info(String.format("Found driver by ID: %s", id));
+            return new ResponseEntity<>(driver, HttpStatus.OK);
+        }
+        logger.info(String.format("No drivers found by ID: %s", id));
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
