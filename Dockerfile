@@ -2,6 +2,7 @@ FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
 ADD build/libs/driver-query-0.0.1.jar app.jar
 ENV JAVA_OPTS=""
+ENV MONGO_HOST="mongo"
 ENV MONGO_PORT="27017"
 ENV RABBIT_HOST="rabbitmq"
 EXPOSE 8080

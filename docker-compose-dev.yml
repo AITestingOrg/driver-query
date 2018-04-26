@@ -15,7 +15,7 @@ services:
       - "5672:5672"
       - "15672:15672"
   driver-cmd:
-    image: aista/tdriver-cmd
+    image: ../driver-cmd/
     container_name: 'driver-cmd'
     environment:
       - RABBIT_HOST=rabbitmq

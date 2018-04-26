@@ -61,12 +61,19 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.codehaus.groovy:groovy-all:2.4.6')
 	testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}")
+	testCompile("org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}")
 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 }
 
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+contracts {
+	baseClassMappings {
+		baseClassMapping(".*driverquery.*", "org.aitesting.microservices.driverquery.provider.DriverQueryContractBase")
 	}
 }
 
@@ -93,6 +100,13 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: "${project.buildDir}/classes/main",
+					exclude: ['**/controllers/DriverControllerExceptionHandler*',
+							  '**/DriverQueryApplication*'])
+		})
+	}
 	violationRules {
 		rule {
 			limit {
