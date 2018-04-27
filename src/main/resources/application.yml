@@ -19,8 +19,8 @@ server:
 amqp:
   events:
     host: ${RABBIT_HOST:localhost}
-    exchange-name: eventBus
-    queue-name: eventQueue
+    exchange-name: eventBusDriver
+    queue-name: eventQueueDriver
     handlers: org.aitesting.microservices.driver.query.domain.eventhandlers
 
 logging:

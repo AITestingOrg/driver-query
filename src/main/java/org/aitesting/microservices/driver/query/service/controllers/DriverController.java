@@ -42,5 +42,14 @@ public class DriverController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("driver/available")
+    public ResponseEntity<Driver> getAvailableDriver() {
+        logger.info(String.format("Request for available driver"));
+        List<Driver> availableDrivers = driverRepository.findByAvailableTrue();
+        if(availableDrivers.size() > 0) {
+            return new ResponseEntity<>(availableDrivers.get(0), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
 
