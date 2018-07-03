@@ -37,6 +37,11 @@ logging:
         commons:
           dbcp2: DEBUG
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discoveryservice:8761/eureka
+
 ---
 spring:
   profiles: test
