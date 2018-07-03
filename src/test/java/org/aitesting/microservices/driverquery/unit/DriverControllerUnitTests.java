@@ -42,4 +42,26 @@ public class DriverControllerUnitTests {
         //assert
         verify(driverRepository, times(1)).findOne(id1);
     }
+
+    @Test
+    public void getAvailableDriver_FindByAvailableIsCalled() {
+        //arrange
+
+        //act
+        driverController.getAvailableDriver();
+
+        //assert
+        verify(driverRepository, times(1)).findByAvailable(true);
+    }
+
+    @Test
+    public void getAllAvailableDrivers_FindByAvailableIsCalled() {
+        //arrange
+
+        //act
+        driverController.getAllAvailableDrivers();
+
+        //assert
+        verify(driverRepository, times(1)).findByAvailable(true);
+    }
 }
