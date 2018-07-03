@@ -19,7 +19,7 @@ services:
       - RABBIT_HOST=rabbitmq
       - MONGO_HOST=mongo
     ports:
-      - "8080"
+      - '8080'
     depends_on:
       - rabbitmq
       - mongo

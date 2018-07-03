@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface DriverRepository extends MongoRepository<Driver, UUID> {
 
-    public List<Driver> findByAvailableTrue();
+    public List<Driver> findByAvailable(boolean b);
 
 }

@@ -44,12 +44,21 @@ public class DriverController {
 
     @GetMapping("driver/available")
     public ResponseEntity<Driver> getAvailableDriver() {
-        logger.info(String.format("Request for available driver"));
-        List<Driver> availableDrivers = driverRepository.findByAvailableTrue();
+        logger.info(String.format("Request for an available driver"));
+        List<Driver> availableDrivers = driverRepository.findByAvailable(true);
         if(availableDrivers.size() > 0) {
             return new ResponseEntity<>(availableDrivers.get(0), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-}
 
+    @GetMapping("drivers/allavailable")
+    public ResponseEntity<List<Driver>> getAllAvailableDrivers() {
+        logger.info(String.format("Request for all available drivers"));
+        List<Driver> availableDrivers =driverRepository.findByAvailable(true);
+        if(availableDrivers.size() > 0) {
+            return new ResponseEntity<>(availableDrivers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+}
